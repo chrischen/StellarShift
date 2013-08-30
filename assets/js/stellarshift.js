@@ -1,61 +1,66 @@
+// TODO FIX NETWORK
+// Update ships only if they change acceleration/direction
+// Have bullets show up on network
+
 var TILE_SIZE = 86;
 var MAP_WIDTH = 50;
 var MAP_HEIGHT = 50;
 var MAP = [
-        2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4];
+    2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+    3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4];
 
 // CONSTANTS
 var DEBUG_MODE = true;
 
+// Colors used for energy
 var COLOR_GREEN = "#03E849";
 var COLOR_YELLOW = "#eee72c";
 var COLOR_RED = "#f6091f";
@@ -83,7 +88,7 @@ var NRG_RECHARGE_RATE = 5; // Increase by 1 every x ms
 var BULLET_NRG = 70; // energy required for a bullet
 var BOMB_NRG = 200; // energy require for a bomb
 
-var BULLET_BOOST = 2; // magnitude of velocity added to shot bullet
+var BULLET_BOOST = 2.2; // magnitude of velocity added to shot bullet
 var MAX_BULLET_VX = MAX_SHIP_VX + BULLET_BOOST;
 var MAX_BULLET_VY = MAX_SHIP_VY + BULLET_BOOST;
 var MAX_BULLET_V = new Joy.Vector2d(MAX_BULLET_VX, MAX_BULLET_VY);
@@ -104,22 +109,29 @@ var bomb_index = 0;
 
 var WALL_DAMPENING = 0.7; // Dampening factor when colliding with wall
 
-// FIREBASE / NETWORK STUFF
 var myDataRef = new Firebase('https://stellarshift.firebaseio.com/');
 var network_data = new Array();
 var players = new Array();
 var bullets = new Array();
 var player_id;
 
-// Set data to number of players, their projectiles and locations
+// FIREBASE NETWORK VARIABLES
+var playersRef = new Firebase('https://stellarshift.firebaseio.com/players');
+var players = new Array(); // array of player sprites
 
-// when join server, try to pull data
+var bulletsRef = new Firebase('https//stellarshift.firebaseio.com/bullets');
+var bullets = new Array();
 
 var engine = new Joy.Engine({
     debug: DEBUG_MODE,
     width: document.body.clientWidth,
     height: document.body.clientHeight
 });
+
+// MISCELLANEOUS VARIABLES
+var NOTIFICATION_FADE_TIME = 3000;
+var notification_time;
+var game_enter_time;
 
 engine.createScene(function (scene) {
     // SOUNDS
@@ -128,15 +140,23 @@ engine.createScene(function (scene) {
     });
 
     // BACKGROUND AND TILEMAP
-    //TODO make this bg img smaller
+    //TODO make this bg img smaller, determine source of lag
+    var background = new Joy.Rect({
+        position: scene.viewport.position,
+        width: 4300,
+        height: 4300
+    });
+    background.colorize("#000000");
+    scene.addChild(background);
+
     var backgroundParallax = new Joy.Parallax({
       id: "Parallax",
       distance: 100,
-      velocity: .5,
+      velocity: .25,
       children: [
         new Joy.Sprite({
-          x: -1000,
-          y: -1000,
+          x: -1075,
+          y: -1075,
           src: "assets/img/bg_big.png"})
       ]
     });
@@ -170,6 +190,18 @@ engine.createScene(function (scene) {
         x: engine.width / 2 - 42,
         y: engine.height / 2 + 5,
         text: "Player",
+        color: COLOR_GREEN
+    });
+
+    var text_coords = new Joy.Text({
+        x: 10,
+        y: 10,
+        color: COLOR_GREEN
+    });
+
+    var text_notification = new Joy.Text({
+        x: 100,
+        y: 10,
         color: COLOR_GREEN
     });
 
@@ -249,6 +281,7 @@ engine.createScene(function (scene) {
     });
 
     // Ship behavior for movement and updating state
+    // Behaviour for ships in general
     Joy.Behaviour.define('ShipBehavior', {
         INIT: function() {
             this.maxVelocity = MAX_SHIP_V
@@ -258,7 +291,8 @@ engine.createScene(function (scene) {
             this.rotation = Math.floor(Math.random() * 359);
             this.nrg = MAX_SHIP_NRG;
             this.last_update = new Date().getTime();
-            this.type = "ship";
+            this.sprite_type = "ship";
+            this.player_id;
         },
 
         KEY_UP: function(evt) {
@@ -294,9 +328,12 @@ engine.createScene(function (scene) {
 
         UPDATE: function() {
             var current_time = new Date().getTime();
+
+            // UPDATE ENERGY
             if (this.nrg != MAX_SHIP_NRG && current_time - this.last_update >= NRG_RECHARGE_RATE)
             {
                 this.nrg++;
+                this.last_update = new Date().getTime();
             }
 
             text_nrg.text = this.nrg;
@@ -310,23 +347,41 @@ engine.createScene(function (scene) {
                 text_nrg.color = COLOR_RED;
             }
 
+            // CHECK DEATH
             if (this.nrg <= 0)
             {
                 //TODO: Death animation, use particle effects?
-                death_sound.play();
+                //death_sound.play();
                 this.visible = false;
                 // wait for an amount of time and set player position to random location and make visible
             }
 
-            this.last_update = new Date().getTime();
-        }
+            // Update coords
+            text_coords.text = Math.floor(this.position.x) + ", " + Math.floor(this.position.y);
+
+            // Notification fade time
+            if (current_time - notification_time >= NOTIFICATION_FADE_TIME)
+            {
+                text_notification.text = "";
+            }
+
+            //NETWORK STUFF
+            // Check if there is data on firebase
+            // Update player coords on firebase
+            if (player_id !== undefined)
+            {
+                playersRef.child(player_id).update({x: player.position.x, y: player.position.y, rotation: player.rotation, type: player.type});
+            }
+        },
     });
 
+    // Behavior specific to the Zappir ship
     Joy.Behaviour.define('ZappirBehavior', {
         INIT: function() {
             this.maxVelocity = new Joy.Vector2d(ZAPPIR_MAX_V, ZAPPIR_MAX_V);
             this.last_update = new Date().getTime();
             this.last_shot = new Date().getTime();
+            this.type = "zappir";
         },
 
         KEY_PRESS: function(evt)
@@ -340,6 +395,9 @@ engine.createScene(function (scene) {
                     this.nrg -= ZAPPIR_BULLET_NRG;
 
                     scene.removeChild(bullet_array[bullet_index]);
+                    bulletsRef.child(player_id).child(bullet_index).remove();
+
+                    // remove bullet from network
 
                     var acceleration_x = this.acceleration.x;
                     var acceleration_y = this.acceleration.y;
@@ -354,21 +412,27 @@ engine.createScene(function (scene) {
                         y: this.position.y - 18 * Math.cos(rotation * Math.PI / 180),
                         width: 6,
                         height: 6,
-                        src: "assets/img/grazi_bullet.png",
-                        type: "bullet",
-                        live: true
+                        src: "assets/img/grazi_bullet.png"
                     });
 
-                    Joy.Behaviour.define('ProjectileBehavior' + bullet_index, {
+                    Joy.Behaviour.define('ProjectileBehavior', {
                         INIT: function() {
-                            this.maxVelocity = MAX_BULLET_V;
-                            this.friction = new Joy.Vector2d(BULLET_FRICTION, BULLET_FRICTION);
                             this.velocity.x = velocity_x + BULLET_BOOST * Math.sin(rotation * Math.PI / 180);
                             this.velocity.y = velocity_y - BULLET_BOOST * Math.cos(rotation * Math.PI / 180);
                             this.pivot.x = this.width / 2;
                             this.pivot.y = this.height / 2;
                             this.shot_time = new Date().getTime();
                             this.dmg = ZAPPIR_BULLET_DMG;
+                            this.sprite_type = "projectile";
+                            this.bullet_index = bullet_index;
+
+                            // for (var i=0; i<players.length; i++)
+                            // {
+                            //     if (i != player_id)
+                            //     {
+                            //         players[i].allowCollisionFrom(this);
+                            //     }
+                            // }
                         },
 
                         UPDATE: function() {
@@ -376,34 +440,29 @@ engine.createScene(function (scene) {
                             if (this.visible && current_time - this.shot_time > BULLET_LIFE)
                             {
                                 this.visible = false;
-                            }
-
-                            //TODO: Check network data and allow collision with other players
-                            for (var i=0; i<players.length; i++)
-                            {
-                                if (i != player_id)
-                                {
-                                    this.allowCollisionFrom(players[i]);
-                                }
-                            }
-                        },
-
-                        COLLISION: function(other) {
-                            if (other instanceof Joy.Sprite && other.type == "ship" && this.visible)
-                            {
-                                console.log(other.nrg);
-                                other.nrg -= this.dmg;
-                                this.visible = false;
+                                bulletsRef.child(player_id).child(this.bullet_index).remove();
                             }
                         }
                     });
 
-                    bullet_array[bullet_index].behave('Movimentation, BounceBehavior, ProjectileBehavior' + bullet_index);
-
+                    bullet_array[bullet_index].behave('Movimentation, BounceBehavior, ProjectileBehavior');
                     bullet_array[bullet_index].collider = new Joy.RectCollider(new Joy.Vector2d(-3, -3), 6, 6);
                     bullet_array[bullet_index].allowCollisionFrom(tilemap);
 
                     scene.addChild(bullet_array[bullet_index]);
+
+                    // NETWORK STUFF, add bullet to firebase
+                    var bullet = bullet_array[bullet_index];
+                    bulletsRef.child(player_id).child(bullet_index).set({
+                        x: bullet.position.x,
+                        y: bullet.position.y,
+                        dmg: bullet.dmg,
+                        width: bullet.width,
+                        height: bullet.height,
+                        vx: bullet.velocity.x,
+                        vy: bullet.velocity.y
+                    });
+
                     this.last_shot = new Date().getTime();
 
                     bullet_index++;
@@ -417,92 +476,110 @@ engine.createScene(function (scene) {
     });
 
     // Random spawn assumes 1 Tile width boundary around whole area
-    var zappir = new Joy.Sprite({
-    	x: Math.floor(Math.random() * TILE_SIZE * (MAP_WIDTH - 2)) + TILE_SIZE,
-    	y: Math.floor(Math.random() * TILE_SIZE * (MAP_HEIGHT - 2)) + TILE_SIZE,
+    // Player sprite, default Zappir ship for now
+    var player = new Joy.Sprite({
+    	x: Math.floor(Math.random() * TILE_SIZE * (MAP_WIDTH - 2)) + TILE_SIZE - 48,
+    	y: Math.floor(Math.random() * TILE_SIZE * (MAP_HEIGHT - 2)) + TILE_SIZE - 48,
     	width: 48,
     	height: 48,
     	src: "assets/img/zappir.png"
     }).behave('Movimentation, ShipBehavior, BounceBehavior, ZappirBehavior');
 
-    zappir.collider = new Joy.RectCollider(new Joy.Vector2d(-22, -22), 44, 44);
-    zappir.allowCollisionFrom(tilemap);
-    scene.addChild(zappir);
+    player.collider = new Joy.RectCollider(new Joy.Vector2d(-22, -22), 44, 44);
+    player.allowCollisionFrom(tilemap);
+    scene.addChild(player);
 
-    Joy.Behaviour.define('DummyBehavior', {
-        INIT: function() {
-            this.pivot.x = this.width / 2;
-            this.pivot.y = this.width / 2;
-            this.nrg = MAX_SHIP_NRG;
-            this.type = "ship";
-            this.last_update = new Date().getTime();
-        },
+    // FIREBASE / NETWORK STUFF
+    // Initial network startup
+    // Check for a free player ID
+    var i = 0;
+    function setPlayerId(snapshot)
+    {
+        if (snapshot.val() === null)
+        {
+            console.log("Setting player_id to " + i);
+            player_id = i;
+            playersRef.child(i).set({x: player.position.x, y: player.position.y, rotation: player.rotation, type: player.type});
+            text_alias.text = text_alias.text + " " + (i + 1);
+            playersRef.child(i).onDisconnect().remove();
+            bulletsRef.child(i).onDisconnect().remove();
+            game_enter_time = new Date().getTime();
+        } else {
+            i++;
+            playersRef.child(i).once('value', setPlayerId);
+        }
+    }
+    playersRef.child(i).once('value', setPlayerId);
 
-        UPDATE: function() {
+    // Check for other players
+    // Create sprites for other players
+    playersRef.on('child_added', function(snapshot) 
+    {
+        var playerData = snapshot.val();
+        var id = parseInt(snapshot.name());
+        if (player_id !== undefined && id != player_id && players[i] === undefined)
+        {
             var current_time = new Date().getTime();
-            if (this.nrg != MAX_SHIP_NRG && current_time - this.last_update >= NRG_RECHARGE_RATE)
+            if (current_time - game_enter_time >= 1000) // delay before checking for players joining
             {
-                this.nrg++;
+                notification_time = new Date().getTime();
+                text_notification.text = "Player " + (id + 1) + " has joined the game.";
             }
 
-            if (this.nrg <= 0)
-            {
-                //TODO: Death animation, use particle effects?
-                // Make ship disappear, when dead, maybe move off the map?
-                death_sound.play();
-                this.visible = false;
-                // wait for an amount of time and set player position to random location and make visible
-            }
+            players[id] = new Joy.Sprite({
+                x: playerData.x,
+                y: playerData.y,
+                width: 48,
+                height: 48,
+                src: "assets/img/" + playerData.type + ".png",
+                pivot: new Joy.Vector2d(24, 24),
+                collider: new Joy.RectCollider(new Joy.Vector2d(-22, -22), 44, 44)
+            });
 
-            this.last_update = new Date().getTime();
+            scene.addChild(players[id]);
         }
     });
 
-    var dummy = new Joy.Sprite({
-        x: zappir.position.x,
-        y: zappir.position.y,
-        width: 48,
-        height: 48,
-        src: "assets/img/zappir.png"
-    }).behave('DummyBehavior');
+    // Check for players changing state
+    playersRef.on('child_changed', function(snapshot)
+    {
+        var playerData = snapshot.val();
+        var id = parseInt(snapshot.name());
 
-    dummy.collider = new Joy.RectCollider(new Joy.Vector2d(-22, -22), 44, 44);
-    dummy.allowCollisionFrom(tilemap);
-    scene.addChild(dummy);
+        if (player_id !== undefined && id != player_id && players[id] !== undefined)
+        {
+            players[id].position.x = playerData.x;
+            players[id].position.y = playerData.y;
+            players[id].rotation = playerData.rotation;
+        }
+    });
 
-    player_id = 0;
-    text_alias.text = text_alias.text + " " + player_id + 1;
+    // Check for players leaving the game
+    playersRef.on('child_removed', function(snapshot)
+    {
+        var id = parseInt(snapshot.name());
+        scene.removeChild(players[id]);
+        players[id] = null;
 
-    players.push(zappir);
-    players.push(dummy);
+        notification_time = new Date().getTime();
+        text_notification.text = "Player " + (id + 1) + " has left the game.";
+    });
 
+    // Check for bullets
+    bulletsRef.on('child_added', function(snapshot)
+    {
+
+    });
+
+    // Follow the player (player stays centered)
     scene.viewport.setup({
-        follow: zappir,
+        follow: player,
         width: engine.width,
         height: engine.height
     });
 
     scene.viewport.addHud(text_nrg);
     scene.viewport.addHud(text_alias);
-
-    //NETWORK STUFF
-    // Check if there is data on firebase
-    var initial_check = false;
-    myDataRef.on('child_added', function(snapshot) {
-        console.log("getting data.");
-        network_data = snapshot.val();
-        initial_check = true;
-
-        player_id = network_data.players.length;
-        network_data.players.push(zappir);
-    });
-
-    if (initial_check && network_data.length == 0)
-    {
-        console.log("setting data.");
-        var player = {position: zappir.position, rotation: zappir.rotation};
-        network_data.players = new Array();
-        network_data.players.push(zappir);
-        myDataRef.set(network_data);
-    }
+    scene.viewport.addHud(text_coords);
+    scene.viewport.addHud(text_notification);
 });
